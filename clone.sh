@@ -1,15 +1,12 @@
 path=$(pwd)
-if [ ! -x "$1" ];then
+name=$(echo "$1"|cut -d "/" -f1)
+echo $name
+if [ ! -x "$name" ];then
 
-	mkdir "$1"
+	mkdir "$name"
 fi
 
-cp "$1"_repos $path/"$1"
-cd $path/"$1"
+cd $path/"$name"
 echo $(pwd)
-
-while read f;
-	do 
-		echo https://github.com/$f;
-	done < <(cat "$1"_repos)
+git clone https://github.com/"$1";
 	
