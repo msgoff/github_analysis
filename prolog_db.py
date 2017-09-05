@@ -6,4 +6,6 @@ data=g.readlines()
 for line in data:
 	file_name=argv[1].replace('_following','')
  	line = line.replace('\n','')	
-	print("following({},{}).".format(file_name,line))
+	f.write("following({},{}).".format(file_name,line))
+	f.write('\n')
+f.close()
