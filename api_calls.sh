@@ -1,5 +1,5 @@
-username=''
-token=''
+username='msgoff'
+token='
 
 github_api()
 {
@@ -19,4 +19,7 @@ github_api()
 
 }
 
-github_api "$1" "$2" "$3"
+github_api "$1" following 1
+github_api "$1" repos 1
+github_api "$1" followers 1
+github_api "$1" starred 1
