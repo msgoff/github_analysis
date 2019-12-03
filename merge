@@ -1,8 +1,0 @@
-while read f;
-  do name=$(echo $f|cut -d "_" -f1);
-  echo $name >> summary;
-  while read g;
-    do echo "    "$name,$g >> summary;
-      done < <(cat $f);
-  rm $f;
-    done < <(ls *_following)
