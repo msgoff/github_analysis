@@ -1,5 +1,7 @@
 %{
 
+#include <string.h>
+
 %}
 
 %s consume_one
@@ -15,8 +17,23 @@
 
 
 int main(int argc, char* argv[]){
-
+	if (argc != 2 ){
+		exit(1);
+	}
+	
+	int MAX_FILENAME_LEN=256;
+	char output_filename[MAX_FILENAME_LEN];
+	
+	if(strlen(argv[1]) > 5){
+		//replace .json with _cleaned.json
+		memset(output_filename,'\0',MAX_FILENAME_LEN);
+		memcpy(output_filename,argv[1],strlen(argv[1])-5);
+		strcat(output_filename,"_cleaned.json");
+	} else { exit(1); }
+	
 	yyin=fopen(argv[1],"r");
+	yyout=fopen(output_filename,"w");
 	yylex();
+	
 	return 0;
 }
