@@ -1,7 +1,7 @@
 #include "jsonc.h"
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <string.h>
 
 
 
@@ -17,8 +17,9 @@ int main(int argc, char* argv[])
 		exit(EXIT_FAILURE);
 
 	while ((read = getline(&line, &len, stream)) != -1) {
-		test=json_get(line,"id");
-		printf("id:%s\n",test);
+		json_dump_keys(line);
+		//test=json_get(line,"id");
+		//printf("id:%s\n",test);
 	}
 
 	free(line);
