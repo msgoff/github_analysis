@@ -1,3 +1,8 @@
+openssl:
+	 wget https://www.openssl.org/source/openssl-3.0.0-alpha15.tar.gz
+	 tar -xf openssl-3.0.0-alpha15.tar.gz
+	 cd openssl-3.0.0-alpha15/ && ./Configure && make && make test && sudo make install
+
 zlib:
 	wget https://zlib.net/zlib-1.2.11.tar.xz
 	tar -xf zlib-1.2.11.tar.xz
