@@ -24,6 +24,9 @@ flex:
 	sudo apt install help2man -y
 	cd flex && bash autogen.sh && ./configure && make && sudo make install
 
+get_data:
+	gcc get_data.c -o get_data -lcurl 
+
 
 lexer:
 	flex lexer.l
