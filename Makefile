@@ -27,6 +27,8 @@ flex:
 get_data:
 	gcc get_data.c -o get_data -lcurl 
 
+gunzip:
+	gcc gunzip.c -o gunzip -lz
 
 lexer:
 	flex lexer.l
