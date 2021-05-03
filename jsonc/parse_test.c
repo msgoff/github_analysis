@@ -17,12 +17,15 @@ int main(int argc, char* argv[])
 		exit(EXIT_FAILURE);
 
 	while ((read = getline(&line, &len, stream)) != -1) {
-		json_dump_keys(line);
+		json_dump_keys(line,"commit");
 		//test=json_get(line,"id");
 		//printf("id:%s\n",test);
 	}
+
+	re_findall("hello","hello");
 
 	free(line);
 	fclose(stream);
 	exit(EXIT_SUCCESS);
 }
+

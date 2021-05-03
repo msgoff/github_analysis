@@ -30,8 +30,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <regex.h>
 #define JSON_MAXPATHLEVEL 32
+char key[256];
+char key_prefix[256];
+int key_index=0;
+int print_state=-1;
 
+int re_findall(char *pattern, char* string);
 /**
  * jsonstr: zero terminated UTF-8 string
  * key: path to a value, like "0.6.0.1" or "result.items.0.name"
@@ -108,16 +114,28 @@ end:if(!*m && e>s) {
     return ret;
 }
 
+void json_key(unsigned char *s){
+	
+    	if(*s=='\"') s++;
+    while(*s && *s!=',' && *s!='{' && *s!='[' && *s!=']' && *s!='}' && *s!='\"' && *s!='\r' && *s!='\n')
+    { if(key_index < 250) { key[key_index]=*s++; key_index++;}
+   	
+    }
+}
 
 
 void json_print(unsigned char *s)
 {
     if(*s=='\"') s++;
     while(*s && *s!=',' && *s!='{' && *s!='[' && *s!=']' && *s!='}' && *s!='\"' && *s!='\r' && *s!='\n')
-        putchar(*s++);
+        printf("%d",sizeof(*s++));
+		//putchar(*s++);
+        
 }
-void json_dump_keys(const char *jsonstr)
+void json_dump_keys(const char *jsonstr, char* key_pattern)
 {
+    memset(key,'\0',256);
+    key_index=0;    
     unsigned char *c=(unsigned char*)jsonstr,*k[33],*v;
     int l=0,j=1,i,n,x[33]={0};
     if(!jsonstr || !jsonstr[0]) return;
@@ -128,14 +146,23 @@ void json_dump_keys(const char *jsonstr)
         case '\"': c++; while(*c && *c!='\"') { if(*c=='\\') { c++; } c++; } break;
         case ':': c++; while(*c && *c<=' ') { c++; } v=c--; break;
         case 0: case ',': case '{': case '[': case '}': case ']':
-            if(*v!=','&&*v!='{'&&*v!='['&&*v!=']'&&*v!='}') {
+	if(*v!=','&&*v!='{'&&*v!='['&&*v!=']'&&*v!='}') {
                 n=k[0][0]=='{'?1:0;
                 /* print path */
+		
                 for(i=n;i<=l;i++) {
-                    if(i!=n) printf(".");
-                    if(k[i][0]=='\"' && k[i]!=v) json_print(k[i]); else printf("%d",x[i]);
+                    if(i!=n) {key[key_index]='.'; key_index++;}
+                    if(k[i][0]=='\"' && k[i]!=v) { 
+			    json_key(k[i]);
+		    }  else printf("%d",x[i]);
+
                 }
-		printf("\n");
+		if (re_findall(key_pattern,key) == 0) {
+			printf("%s\n",key);
+		}
+
+		memset(key,'\0',256);
+		key_index=0;
                 /* print value */
                 //printf("\t\t"); json_print(v); printf("\n");
             }
@@ -151,3 +178,23 @@ void json_dump_keys(const char *jsonstr)
         c++;
     }
 }
+
+int re_findall(char *pattern, char* string) {
+  regex_t regex;
+  int reti;
+  char msgbuf[10000];
+  reti = regcomp(&regex, pattern, 0);
+  if (reti) {
+    fprintf(stderr, "Could not compile regex\n");
+    exit(1);
+  }
+  reti = regexec(&regex, string, 0, NULL, 0);
+  if (!reti) {
+	  //if match found return 0 else 1
+	  regfree(&regex);
+	  return 0;
+  }
+  regfree(&regex);
+  return 1;
+}
+
