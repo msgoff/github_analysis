@@ -15,6 +15,7 @@ int main(int argc, char *argv[]) {
 
   while ((read = getline(&line, &len, stream)) != -1) {
     if (line != NULL) {
+      // ignore entries with 0 forks count
       if (re_findall("forks_count\":0", line) != 0) {
         json_dump_keys(line, "forks");
         printf("*****************************************\n");
