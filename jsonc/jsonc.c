@@ -193,7 +193,7 @@ void json_print(unsigned char *s) {
   // printf("%d",sizeof(*s++));
   // putchar(*s++);
 }
-void json_dump_keys(const char *jsonstr, char *key_pattern) {
+void json_dump_keys(const char *jsonstr) {
   memset(key, '\0', 256);
   key_index = 0;
   unsigned char *c = (unsigned char *)jsonstr, *k[33], *v;
@@ -244,7 +244,6 @@ void json_dump_keys(const char *jsonstr, char *key_pattern) {
           }
           // else printf("%d",x[i]);
         }
-        // if (re_findall(key_pattern,key) == 0) {
         if (json_get(jsonstr, key) != NULL) {
           printf("%s:%s\n", key, json_get(jsonstr, key));
         }
