@@ -1,3 +1,10 @@
+parse:
+	ragel keyword_search.rl
+	gcc keyword_search.c
+	./a.out test > /dev/shm/pairs
+	sed -i -r 's/^:id/id/g' /dev/shm/pairs
+	python process_file.py test 
+
 openssl:
 	 wget https://www.openssl.org/source/openssl-3.0.0-alpha15.tar.gz
 	 tar -xf openssl-3.0.0-alpha15.tar.gz
